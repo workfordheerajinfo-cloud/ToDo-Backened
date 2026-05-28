@@ -7,6 +7,8 @@ const {StatusCodes} = require("http-status-codes");
 const getTasksValidator = require("./validator/getTaskValidator.js");
 const updateTaskValidator = require("./validator/updateTaskValidator.js");
 const deleteTaskValidator = require("./validator/deleteTaskvalidator.js");
+const deleteAllTaskValidator = require("./validator/deleteAllTaskValidator.js");
+
 
 const taskRouter = express.Router();
 
@@ -47,6 +49,15 @@ taskRouter.delete("/delete/:id", deleteTaskValidator,(req,res)=>{
     return taskController.deleteTask(req,res);
   }else{
    return res.status(StatusCodes.BAD_REQUEST).json(result.array());
+  }
+})
+
+taskRouter.delete("/deleteAll", deleteAllTaskValidator, (req,res) =>{
+  const result = validationResult(req);
+  if(result.isEmpty()){
+    return taskController.deleteAllTask(req,res);
+  }else{
+    res.status(StatusCodes.BAD_REQUEST).json(result.array());
   }
 })
 
